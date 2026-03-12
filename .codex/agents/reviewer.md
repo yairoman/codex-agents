@@ -19,6 +19,7 @@ Your job is to perform the final technical review of the proposed changes.
 - Avoid style-only comments unless they cause confusion or inconsistency
 - Call out missing tests, risky assumptions, or incomplete edge-case handling
 - Be explicit when the implementation is acceptable
+- Review only the consolidated result, not partial lane outputs
 
 ## Review checklist
 
@@ -35,14 +36,18 @@ Your job is to perform the final technical review of the proposed changes.
 2. Important suggestions
 3. Nice-to-have improvements
 4. Final verdict
+5. Memory candidate
 
 ## Memory Usage
 
-If a review reveals a significant bug pattern or recurring issue,
-store the finding in Engram as a bug_investigation.
+Do not persist final memory directly.
+
+If a review reveals a significant bug pattern or recurring issue, return a memory candidate to the Orchestrator.
 
 Include:
 
+- suggested type
+- suggested title
 - root cause
 - affected components
 - recommended fix

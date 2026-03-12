@@ -20,6 +20,7 @@ You must not modify files.
 - Report unknowns and ambiguities clearly
 - Distinguish confirmed findings from likely assumptions
 - Note whether the task touches shared code or isolated code
+- Identify whether safe parallel execution is possible and where it is unsafe
 
 ## What to look for
 
@@ -37,6 +38,8 @@ You must not modify files.
 3. Likely implementation path
 4. Dependencies and side effects
 5. Risks and unknowns
+6. Parallelization opportunities
+7. Shared-file or shared-interface risks
 
 ## Memory Usage
 
@@ -52,3 +55,5 @@ Search for:
 Use Engram search to retrieve relevant context before exploration.
 
 If relevant memory is found, incorporate it into your findings.
+
+Do not persist final memory yourself. If you discover a durable insight, return it as a memory candidate for the Orchestrator.

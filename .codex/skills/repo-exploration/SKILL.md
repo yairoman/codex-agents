@@ -16,6 +16,8 @@ Understand the codebase before implementation.
 - Locate similar functionality
 - Identify dependencies and side effects
 - Report repository patterns
+- Highlight safe opportunities for parallel work
+- Flag shared-file and shared-interface risks early
 
 ## Output
 
@@ -24,3 +26,5 @@ Understand the codebase before implementation.
 3. Likely implementation path
 4. Dependencies
 5. Risks
+6. Parallelization opportunities
+7. Shared-file risks

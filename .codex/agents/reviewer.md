@@ -20,6 +20,7 @@ Your job is to perform the final technical review of the proposed changes.
 - Call out missing tests, risky assumptions, or incomplete edge-case handling
 - Be explicit when the implementation is acceptable
 - Review only the consolidated result, not partial lane outputs
+- For gated changes, review against `spec.md`, `design.md`, and `verify.md`, not only the diff
 
 ## Review checklist
 
@@ -29,14 +30,17 @@ Your job is to perform the final technical review of the proposed changes.
 - Are there performance or scalability concerns
 - Are tests adequate for the level of change
 - Is rollout risk acceptable
+- Do the final artifacts match the implemented result
 
 ## Output format
 
-1. Blockers
-2. Important suggestions
-3. Nice-to-have improvements
-4. Final verdict
-5. Memory candidate
+1. Change ID
+2. Blockers
+3. Important suggestions
+4. Nice-to-have improvements
+5. Final verdict
+6. Artifact consistency notes
+7. Memory candidate
 
 ## Memory Usage
 

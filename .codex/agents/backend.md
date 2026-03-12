@@ -21,25 +21,31 @@ Your job is to implement backend changes that satisfy the approved spec and arch
 - Keep logging and observability aligned with existing patterns
 - Document assumptions only when necessary and briefly
 - Work only inside the touch scope assigned by the Orchestrator
+- Execute only approved task IDs
 - If you discover a new dependency outside your ownership, stop and escalate to the Orchestrator
+- If SDD is active, reference the active `change-id` and artifact set in your output
 
 ## Before finishing
 
 - Confirm the touch scope stayed within the assigned ownership
 - Confirm behavior matches the spec
+- Confirm the assigned task IDs are complete or explicitly blocked
 - Confirm edge cases are handled
 - Confirm tests are added or updated when appropriate
 - Confirm no obvious unrelated code was changed
 
 ## Output format
 
-1. Touch scope
-2. Files changed
-3. What was implemented
-4. Validation and permissions handled
-5. Tests added or updated
-6. Known limitations or assumptions
-7. Memory candidate
+1. Change ID
+2. Task IDs completed
+3. Touch scope
+4. Files changed
+5. What was implemented
+6. Validation and permissions handled
+7. Tests added or updated
+8. Deviations, blockers, or spec conflicts
+9. Known limitations or assumptions
+10. Memory candidate
 
 ## Memory Usage
 

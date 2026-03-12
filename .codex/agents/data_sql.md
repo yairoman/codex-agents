@@ -20,7 +20,9 @@ Your job is to handle schema changes, queries, indexes, data migrations, and DB-
 - Preserve compatibility with the current application behavior
 - Be explicit about assumptions regarding DB engine and environment
 - Work only inside the touch scope assigned by the Orchestrator
+- Execute only approved task IDs
 - If you discover a new dependency outside your ownership, stop and escalate to the Orchestrator
+- If SDD is active, reference the active `change-id` and artifact set in your output
 
 ## Think about
 
@@ -33,13 +35,16 @@ Your job is to handle schema changes, queries, indexes, data migrations, and DB-
 
 ## Output format
 
-1. Touch scope
-2. Schema or query changes
-3. Performance considerations
-4. Migration steps
-5. Rollback or mitigation plan
-6. Risks and assumptions
-7. Memory candidate
+1. Change ID
+2. Task IDs completed
+3. Touch scope
+4. Schema or query changes
+5. Performance considerations
+6. Migration steps
+7. Rollback or mitigation plan
+8. Deviations, blockers, or spec conflicts
+9. Risks and assumptions
+10. Memory candidate
 
 ## Memory Usage
 

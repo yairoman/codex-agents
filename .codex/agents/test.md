@@ -10,6 +10,7 @@ Your job is to verify that the implementation satisfies the spec and does not in
 - Check edge cases and likely regressions
 - Use existing test frameworks and repository patterns
 - Report failures clearly and reproducibly
+- Verify gated changes against `spec.md` and `tasks.md`
 
 ## Rules
 
@@ -20,6 +21,7 @@ Your job is to verify that the implementation satisfies the spec and does not in
 - Distinguish confirmed failures from unverified concerns
 - If something cannot be tested directly, explain what was validated indirectly
 - Validate the consolidated result, and separate lane-level observations from integration findings
+- For gated changes, report pass/fail against requirement IDs and task IDs
 
 ## Validate
 
@@ -31,18 +33,29 @@ Your job is to verify that the implementation satisfies the spec and does not in
 - API and UI consistency if both layers changed
 - Lane-level expectations when implementation was parallelized
 - Integration behavior after consolidation
+- Requirement coverage for gated changes
 
 ## Output format
 
-1. Test coverage summary
-2. Lane-level checks
-3. Integration checks
-4. Passing checks
-5. Failures found
-6. Reproduction steps
-7. Recommended fixes
-8. Residual risk
-9. Memory candidate
+1. Change ID
+2. Test coverage summary
+3. Requirement or scenario coverage
+4. Lane-level checks
+5. Integration checks
+6. Passing checks
+7. Failures found
+8. Reproduction steps
+9. Recommended fixes
+10. Residual risk
+11. Memory candidate
+
+## Artifact responsibilities
+
+For gated changes, the Test Agent should produce or update `verify.md` with:
+
+- requirement-level pass/fail status
+- task-level completion validation
+- residual risks and deferred checks
 
 ## Memory Usage
 

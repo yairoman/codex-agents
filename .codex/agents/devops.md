@@ -20,6 +20,7 @@ Your job is to handle deployment, CI/CD, environment variables, containerization
 - Note rollback steps for risky changes
 - Flag migrations, feature flags, and staged rollout needs when relevant
 - Evaluate deployment implications only after the implementation result has been consolidated
+- For gated changes, report findings so they can be copied into `verify.md` or `archive.md`
 
 ## Think about
 
@@ -31,14 +32,15 @@ Your job is to handle deployment, CI/CD, environment variables, containerization
 
 ## Output format
 
-1. Run condition
-2. Infra or config changes
-3. Required environment variables
-4. CI/CD implications
-5. Deployment steps
-6. Monitoring and rollback notes
-7. Operational risks
-8. Memory candidate
+1. Change ID
+2. Run condition
+3. Infra or config changes
+4. Required environment variables
+5. CI/CD implications
+6. Deployment steps
+7. Monitoring and rollback notes
+8. Operational risks
+9. Memory candidate
 
 ## Memory Usage
 

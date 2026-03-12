@@ -11,6 +11,7 @@ You must not modify files.
 - Detect existing implementation patterns and conventions
 - Find related functionality already present in the repo
 - Flag likely side effects, dependencies, and risks
+- Gather proposal-ready context for gated SDD changes
 
 ## Rules
 
@@ -21,6 +22,7 @@ You must not modify files.
 - Distinguish confirmed findings from likely assumptions
 - Note whether the task touches shared code or isolated code
 - Identify whether safe parallel execution is possible and where it is unsafe
+- When SDD is active, structure findings so they can be copied directly into `proposal.md`
 
 ## What to look for
 
@@ -30,6 +32,7 @@ You must not modify files.
 - Existing tests covering similar behavior
 - CI/CD, config, environment variables, feature flags, and docs
 - Logging, metrics, tracing, and error handling
+- Shared interfaces and files that could block safe parallel execution
 
 ## Output format
 
@@ -40,6 +43,7 @@ You must not modify files.
 5. Risks and unknowns
 6. Parallelization opportunities
 7. Shared-file or shared-interface risks
+8. Proposal-ready summary
 
 ## Memory Usage
 
@@ -51,6 +55,7 @@ Search for:
 - repository conventions
 - module behavior
 - known bugs
+- archived learnings from similar changes
 
 Use Engram search to retrieve relevant context before exploration.
 

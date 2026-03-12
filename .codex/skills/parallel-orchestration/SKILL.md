@@ -1,30 +1,26 @@
 ---
 name: parallel-orchestration
-description: Coordinate safe multi-agent parallel execution with ownership, consolidation, and centralized memory.
+description: >
+  Coordinate safe multi-agent parallel execution with ownership, consolidation, and centralized memory.
+  Trigger: When Backend, Frontend, and/or Data SQL may work concurrently after design constraints are approved.
+license: Apache-2.0
+metadata:
+  author: gentleman-programming
+  version: "1.0"
+allowed-tools: Read, Grep, Bash, Task
 ---
 
 # Parallel Orchestration
 
-## Goal
+## When to Use
 
-Run multiple agents in parallel only when their work is truly independent and can be consolidated safely.
-
-## Use this skill when
-
+Use this skill when:
 - a task spans multiple subsystems
 - Backend, Frontend, or Data SQL may work concurrently
-- you need explicit ownership and merge order
-- you want centralized memory handling with Engram
+- ownership and merge order need to be made explicit
+- an SDD-gated change already has approved `spec.md` and `design.md`
 
-## Preconditions
-
-- Explorer has identified relevant files and shared-surface risks
-- Spec Writer has defined scope boundaries and cross-lane dependencies
-- Architect has defined ownership plan, dependency graph, and serialization points
-
-If any precondition is missing, do not parallelize yet.
-
-## Rules
+## Critical Patterns
 
 - Parallelize only independent lanes
 - Assign a single owner per file, interface, or subsystem for each phase
@@ -32,36 +28,36 @@ If any precondition is missing, do not parallelize yet.
 - If independence is unclear, fall back to sequential execution
 - Do not ask Reviewer to review partial results as final
 - Test and DevOps may run in parallel only after consolidation
+- Require each lane to reference task IDs from `tasks.md`
+
+## Decision Tree
+
+| Situation | Action |
+|---|---|
+| Shared file or contract | Serialize that area of work |
+| Clear backend/frontend split | Run lanes in parallel with explicit ownership |
+| New dependency discovered mid-lane | Stop the lane and return to Orchestrator |
+| No approved design | Do not parallelize yet |
 
 ## Workflow
 
-1. Build lanes from the approved scope boundaries
-2. Assign ownership for files, interfaces, and subsystems
-3. Record each lane's touch scope before implementation
-4. Execute only disjoint lanes in parallel
-5. Stop a lane immediately if it discovers a new dependency or overlap
-6. Consolidate all lane outputs before validation and review
-7. Run Test and DevOps on the consolidated result when applicable
-8. Run Reviewer last on the consolidated result
+1. Confirm `spec.md` and `design.md` are approved
+2. Build lanes from the approved scope boundaries
+3. Assign ownership for files, interfaces, and subsystems
+4. Record each lane's touch scope and task IDs in `tasks.md`
+5. Execute only disjoint lanes in parallel
+6. Stop a lane immediately if it discovers a new dependency or overlap
+7. Consolidate all lane outputs before validation and review
+8. Run Test and DevOps on the consolidated result when applicable
+9. Run Reviewer last on the consolidated result
 
-## Conflict handling
+## Commands
 
-- If a lane reports overlap, abort parallel execution for the overlapping area
-- Re-plan the overlapping work as sequential or as a narrower lane
-- Do not merge conflicting outputs without Orchestrator review
+```bash
+rg -n "REQ-|TASK-" specs/changes/<change-id>
+```
 
-## Memory policy
+## Resources
 
-- All agents may read Engram for context
-- Only the Orchestrator writes final memory
-- Worker agents return memory candidates with type, title, summary, location, and risk/learning
-- Deduplicate candidates before persisting final observations
-
-## Output
-
-1. Lane plan
-2. Ownership map
-3. Shared-surface risks
-4. Consolidation plan
-5. Escalation conditions
-6. Memory candidate handling
+- **Tasks template**: `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/specs/changes/_template/tasks.md`
+- **Design template**: `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/specs/changes/_template/design.md`

@@ -1,0 +1,42 @@
+[features]
+multi_agent = true
+
+[agents.orchestrator]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/orchestrator.md"
+
+[agents.explorer]
+model = "gpt-5.3-codex-spark"
+instructions_file = ".codex/agents/explorer.md"
+
+[agents.spec_writer]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/spec_writer.md"
+
+[agents.architect]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/architect.md"
+
+[agents.backend]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/backend.md"
+
+[agents.frontend]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/frontend.md"
+
+[agents.data_sql]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/data_sql.md"
+
+[agents.test]
+model = "gpt-5.3-codex-spark"
+instructions_file = ".codex/agents/test.md"
+
+[agents.reviewer]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/reviewer.md"
+
+[agents.devops]
+model = "gpt-5.4"
+instructions_file = ".codex/agents/devops.md"

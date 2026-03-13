@@ -154,14 +154,29 @@ Y plantillas base en:
 
 ### Multi-agent habilitado
 
-En `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/config.toml` está activado:
+En `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/config.toml` el repositorio publica el manifiesto oficial de Multi-agents para Codex CLI:
 
 ```toml
 [features]
 multi_agent = true
+
+[agents]
+max_depth = 3
+max_threads = 3
+job_max_runtime_seconds = 600
+
+[agents.orchestrator]
+description = "Orquestador principal del workflow multiagente; coordina spec, diseño, implementación, validación y memoria final."
+config_file = "agents/orchestrator.toml"
 ```
 
-### Agentes configurados localmente
+Cada rol se define con `config_file` relativo hacia `.codex/agents/<rol>.toml`, y cada uno de esos archivos contiene el `model` y `developer_instructions` del agente.
+
+Los archivos `.md` en `.codex/agents/` se mantienen como fuente editorial legible; los `.toml` del mismo directorio son el empaquetado ejecutable para Codex CLI.
+
+> Nota: si tu instalación de Codex CLI no consume automáticamente el `.codex/config.toml` del repo, usa este archivo como base reusable e intégralo en `~/.codex/config.toml` o en un profile global.
+
+### Agentes configurados para Codex CLI
 
 | Agente | Propósito |
 |---|---|
@@ -175,6 +190,19 @@ multi_agent = true
 | Test | Valida contra `spec.md` y `tasks.md`, y actualiza `verify.md` |
 | Reviewer | Revisa contra diff + artefactos SDD consolidados |
 | DevOps | Evalúa impacto operativo en el resultado consolidado |
+
+Los archivos ejecutables por rol están en:
+
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/orchestrator.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/explorer.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/spec_writer.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/architect.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/backend.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/frontend.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/data_sql.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/test.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/reviewer.toml`
+- `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/agents/devops.toml`
 
 ### Flujo esperado de trabajo
 

@@ -1,42 +1,51 @@
+# Configuración multi-agent oficial para este repositorio.
+# Úsala como base reusable para Codex CLI y, si tu entorno no carga este archivo localmente,
+# integra su contenido en `~/.codex/config.toml` o en un profile global.
+
 [features]
 multi_agent = true
 
+[agents]
+max_depth = 3
+max_threads = 3
+job_max_runtime_seconds = 600
+
 [agents.orchestrator]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/orchestrator.md"
+description = "Orquestador principal del workflow multiagente; coordina spec, diseño, implementación, validación y memoria final."
+config_file = "agents/orchestrator.toml"
 
 [agents.explorer]
-model = "gpt-5.3-codex-spark"
-instructions_file = ".codex/agents/explorer.md"
+description = "Explora el repositorio en modo lectura y reúne contexto reutilizable para propuestas y cambios."
+config_file = "agents/explorer.toml"
 
 [agents.spec_writer]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/spec_writer.md"
+description = "Convierte solicitudes en especificaciones verificables y listas para implementar."
+config_file = "agents/spec_writer.toml"
 
 [agents.architect]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/architect.md"
+description = "Define el diseño técnico, ownership y restricciones de ejecución segura."
+config_file = "agents/architect.toml"
 
 [agents.backend]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/backend.md"
+description = "Implementa cambios backend conforme a la spec y al diseño aprobados."
+config_file = "agents/backend.toml"
 
 [agents.frontend]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/frontend.md"
+description = "Implementa cambios de UI y comportamiento cliente conforme a la spec aprobada."
+config_file = "agents/frontend.toml"
 
 [agents.data_sql]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/data_sql.md"
+description = "Evalúa y aplica cambios de datos, queries o migraciones con riesgo mínimo."
+config_file = "agents/data_sql.toml"
 
 [agents.test]
-model = "gpt-5.3-codex-spark"
-instructions_file = ".codex/agents/test.md"
+description = "Valida requisitos, escenarios y regresiones sobre el resultado consolidado."
+config_file = "agents/test.toml"
 
 [agents.reviewer]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/reviewer.md"
+description = "Realiza la revisión técnica final contra diff, spec, diseño y verificación."
+config_file = "agents/reviewer.toml"
 
 [agents.devops]
-model = "gpt-5.4"
-instructions_file = ".codex/agents/devops.md"
+description = "Evalúa impacto operativo, despliegue, CI/CD, monitoreo y rollback."
+config_file = "agents/devops.toml"

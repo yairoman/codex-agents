@@ -161,7 +161,7 @@ En `/Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/.codex/config.toml`
 multi_agent = true
 
 [agents]
-max_depth = 3
+max_depth = 1
 max_threads = 3
 job_max_runtime_seconds = 600
 
@@ -256,6 +256,249 @@ En otras palabras:
 - las **skills** definen el **método de trabajo**
 - los **artefactos SDD** definen el **estado del cambio**
 - **Engram** conserva el **conocimiento duradero**
+
+---
+
+## Escenarios recomendados de uso
+
+Esta configuración no busca reemplazar el prompting simple en todos los casos. Funciona mejor como un modelo **híbrido**: prompting directo para lo pequeño y multi-agent + SDD para lo que necesita más control.
+
+### Cuándo conviene usar Multi-agent + SDD
+
+Úsalo cuando el trabajo tenga una o varias de estas características:
+
+- toca varios archivos, capas o subsistemas
+- requiere coordinación entre backend, frontend, datos o devops
+- necesita trazabilidad y artefactos versionados
+- tiene riesgo de regresión, rollout o integración
+- requiere continuidad entre sesiones o mantenimiento futuro
+- necesita validación y revisión más formales
+
+### Cuándo conviene usar prompting directo
+
+Es mejor ir directo con prompting simple cuando la tarea sea:
+
+- pequeña y local
+- de bajo riesgo
+- claramente definida desde el inicio
+- un ajuste rápido en un solo archivo o alcance
+- una pregunta, explicación o refactor menor
+
+### Regla práctica
+
+- **Cambios pequeños** → prompting directo
+- **Cambios medianos o riesgosos** → Multi-agent + SDD
+- **Cambios multi-scope o con handoff** → gated SDD casi siempre
+
+### Tabla comparativa rápida
+
+| Escenario | Prompting simple | Multi-agent sin SDD completo | Multi-agent + SDD |
+|---|---|---|---|
+| Cambio pequeño en un archivo | ✅ Mejor opción | ⚠️ Generalmente innecesario | ❌ Excesivo |
+| Fix local de bajo riesgo | ✅ Mejor opción | ⚠️ Útil sólo si quieres una segunda validación | ❌ Normalmente no vale la pena |
+| Refactor mediano en una capa | ⚠️ Posible, pero depende mucho del prompt | ✅ Buena opción | ⚠️ Sólo si hay riesgo adicional |
+| Feature multi-capa | ❌ Riesgo de ambigüedad | ⚠️ Puede servir si el alcance ya está claro | ✅ Mejor opción |
+| Cambio con backend + frontend + datos | ❌ Poco recomendable | ⚠️ Sólo si no cambia contratos | ✅ Recomendado |
+| Cambio con riesgo operativo o rollout | ❌ No ideal | ⚠️ Parcial | ✅ Recomendado |
+| Trabajo con continuidad entre sesiones | ⚠️ Posible, pero frágil | ✅ Aceptable | ✅ Mejor opción |
+| Mantenimiento complejo o con handoff | ❌ No ideal | ⚠️ Parcial | ✅ Mejor opción |
+
+---
+
+## Ejemplos concretos: usa este modo para estos casos
+
+### Usa **prompting simple** cuando
+
+- quieras cambiar un texto o comentario en un solo archivo
+- necesites ajustar un nombre, constante o mensaje sin impacto estructural
+- quieras pedir una explicación rápida del repositorio o de un archivo
+- hagas un fix pequeño, bien localizado y de muy bajo riesgo
+- necesites una propuesta rápida antes de decidir si vale la pena activar SDD
+
+### Usa **multi-agent sin SDD completo** cuando
+
+- quieras exploración y apoyo de roles, pero sin abrir todo el proceso formal
+- el cambio sea mediano, pero el alcance ya esté bastante claro
+- quieras una implementación más guiada y luego validación/review, sin necesidad de artefactos completos
+- necesites repartir trabajo simple entre roles con poco riesgo contractual
+
+### Usa **multi-agent + SDD** cuando
+
+- vayas a tocar backend, frontend y base de datos en el mismo cambio
+- necesites definir alcance, no-alcance, riesgos y criterios de aceptación antes de implementar
+- el cambio requiera `TASK-*`, ownership por lane y consolidación posterior
+- exista riesgo de regresión, integración o despliegue
+- se trate de una mejora grande, un mantenimiento delicado o una refactorización con varias fases
+- el trabajo vaya a continuar en varias sesiones y quieras dejar memoria útil y artefactos revisables
+
+---
+
+## Cómo forzar prompting directo sin agents + SDD
+
+Aunque el proyecto esté configurado para multi-agent, puedes pedir **bypass explícito** cuando el cambio sea pequeño, local y de bajo riesgo.
+
+### Qué decir en el prompt
+
+Incluye estas tres ideas en tu solicitud:
+
+1. **modo deseado** — “trabaja en modo directo”
+2. **prohibición explícita** — “sin multi-agent, sin SDD, sin delegación”
+3. **justificación** — “es un cambio pequeño, local y de bajo riesgo”
+
+### Plantilla corta
+
+```text
+Trabaja en modo directo.
+Sin multi-agent.
+Sin SDD.
+Sin artefactos.
+Sin delegación.
+Es un cambio local y de bajo riesgo.
+```
+
+### Plantilla recomendada
+
+```text
+Quiero resolver esto con prompting directo, sin multi-agent y sin SDD.
+No uses Explorer, Spec Writer, Architect ni otros subagentes.
+No crees proposal.md, spec.md, design.md, tasks.md, verify.md ni archive.md.
+No abras un change-id ni una carpeta en specs/changes/.
+Resuelve todo en esta misma conversación.
+Es un cambio pequeño, local y de bajo riesgo.
+```
+
+### Ejemplos de uso
+
+#### Ejemplo 1: cambio local
+
+```text
+Ajusta el texto del README en /Users/yairoman/Documents/Proyectos/Aimorro/codex-agents/README.md.
+Hazlo con prompting directo, sin multi-agent y sin SDD.
+No delegates ni crees artefactos.
+Es un cambio local de bajo riesgo.
+```
+
+#### Ejemplo 2: fix pequeño
+
+```text
+Corrige este bug en un solo archivo.
+Bypass SDD: no uses subagentes ni abras specs/changes/.
+Quiero una solución directa en este hilo porque el alcance es pequeño y local.
+```
+
+### Cuándo conviene usar este bypass
+
+Úsalo cuando la tarea sea:
+
+- doc-only
+- un ajuste pequeño en un archivo
+- un fix bien localizado
+- una mejora de muy bajo riesgo
+- una consulta o explicación puntual
+
+---
+
+## Beneficios principales
+
+### 1. Más orden en cambios complejos
+
+El workflow fuerza una secuencia explícita de exploración, especificación, diseño, implementación, validación y revisión. Eso reduce improvisación y cambios contradictorios.
+
+### 2. Mejor trazabilidad
+
+Los artefactos `proposal.md`, `spec.md`, `design.md`, `tasks.md`, `verify.md` y `archive.md` dejan evidencia clara de:
+
+- qué se quería hacer
+- por qué
+- qué se aprobó
+- cómo se validó
+- qué follow-ups quedaron
+
+### 3. Paralelismo más seguro
+
+El paralelismo no ocurre desde el inicio. Primero se fija el diseño y luego se abren lanes sólo cuando el ownership y las fronteras son explícitas. Esto baja conflictos y reduce riesgo de merge caótico.
+
+### 4. Mejor continuidad entre sesiones
+
+Engram permite recuperar decisiones, convenciones y hallazgos importantes sin depender por completo del contexto temporal de una sola conversación.
+
+### 5. Menor dependencia de un prompt perfecto
+
+Con prompting puro, mucho depende de qué tan bien formules la solicitud inicial. Con este sistema, la exploración, el diseño y la consolidación ayudan a compensar solicitudes incompletas o ambiguas.
+
+---
+
+## Costos y desventajas
+
+### 1. Más overhead
+
+Hay más estructura, más coordinación y más pasos que en una conversación directa. Para tareas pequeñas esto puede sentirse innecesario.
+
+### 2. Más consumo de tokens
+
+Incluso optimizado, este enfoque consume más tokens que el prompting simple porque hay:
+
+- handoffs entre agentes
+- artefactos SDD
+- consolidación
+- validación y revisión
+
+### 3. Más tiempo de ejecución
+
+Un flujo gated completo suele tardar más que pedir un cambio directo, especialmente si hay exploración y validación formal.
+
+### 4. Riesgo de sobreproceso
+
+Si usas SDD o múltiples agentes para tareas triviales, el proceso puede volverse más pesado que el valor que aporta.
+
+---
+
+## Consumo de tokens: qué esperar
+
+De forma general, el costo relativo suele verse así:
+
+1. **Prompting simple sin agentes** → menor costo
+2. **Un solo agente / cambio directo** → costo bajo a medio
+3. **Multi-agent sin SDD completo** → costo medio
+4. **Workflow gated completo con SDD** → mayor costo
+
+Este repositorio ya fue optimizado para bajar costo con estas medidas:
+
+- prompts de agentes más cortos
+- `AGENTS.md` más compacto
+- `fork_context = false` por defecto en handoffs SDD
+- memoria on-demand para workers
+- planeación secuencial y paralelismo sólo cuando es seguro
+
+Aun así, el objetivo principal no es ahorrar tokens al máximo, sino **reducir errores, retrabajo y pérdida de contexto**.
+
+---
+
+## Recomendación final
+
+### Sí vale la pena usar esta configuración cuando:
+
+- el cambio es mediano o grande
+- existe riesgo técnico u operativo
+- hay varias capas involucradas
+- necesitas artefactos, revisión y memoria duradera
+- el trabajo continuará en sesiones futuras
+
+### No vale la pena usarla como único modo de trabajo cuando:
+
+- la tarea es pequeña o trivial
+- quieres velocidad por encima de formalidad
+- el alcance está completamente claro y es local
+- el costo de coordinación supera el riesgo del cambio
+
+### Recomendación operativa
+
+Adopta un enfoque híbrido:
+
+- usa **prompting simple** para trabajo pequeño, puntual o exploratorio
+- usa **multi-agent + SDD** para cambios complejos, riesgosos o multi-scope
+
+Ese balance suele dar el mejor resultado entre velocidad, costo, trazabilidad y calidad.
 
 ---
 

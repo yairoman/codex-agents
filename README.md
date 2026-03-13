@@ -472,6 +472,50 @@ Este repositorio ya fue optimizado para bajar costo con estas medidas:
 
 Aun así, el objetivo principal no es ahorrar tokens al máximo, sino **reducir errores, retrabajo y pérdida de contexto**.
 
+### Tabla estimada de consumo por tipo de trabajo
+
+> Estos rangos son orientativos. El consumo real cambia según el tamaño del prompt, el número de archivos, los artefactos generados, la cantidad de validación y si hay handoffs entre agentes.
+
+| Tipo de trabajo | Prompting directo | Multi-agent sin SDD completo | Multi-agent + SDD |
+|---|---:|---:|---:|
+| Ajuste pequeño en un archivo | 1k–4k | 2k–6k | 6k–12k |
+| Fix local de bajo riesgo | 2k–6k | 4k–10k | 8k–18k |
+| Refactor mediano en una capa | 4k–10k | 8k–18k | 15k–30k |
+| Feature multi-capa | 6k–15k | 12k–25k | 20k–50k+ |
+| Cambio con backend + frontend + datos | 8k–18k | 15k–30k | 25k–60k+ |
+| Cambio con validación, review y cierre formal | 6k–12k | 12k–24k | 20k–45k+ |
+
+### Cómo interpretar esta tabla
+
+- **Prompting directo** suele ser la referencia base de menor costo
+- **Multi-agent sin SDD completo** agrega costo por coordinación, pero evita parte de la carga documental
+- **Multi-agent + SDD** agrega el mayor costo porque incluye exploración, artefactos, consolidación y validación formal
+
+### Regla de decisión por costo
+
+- si el cambio cuesta poco en complejidad y riesgo, normalmente no conviene pagar el costo extra de SDD
+- si el cambio es riesgoso, multi-scope o va a continuar en varias sesiones, el costo extra suele compensarse
+
+### Matriz visual de decisión
+
+| Modo | Costo de tokens | Velocidad | Riesgo que tolera bien | Trazabilidad | Cuándo elegirlo |
+|---|---|---|---|---|---|
+| Prompting directo | Bajo | Alta | Bajo | Baja | Cambios pequeños, locales y claros |
+| Multi-agent sin SDD completo | Medio | Media | Bajo a medio | Media | Cambios medianos con necesidad de algo de coordinación |
+| Multi-agent + SDD | Alto | Baja a media | Medio a alto | Alta | Cambios complejos, multi-scope o con handoff |
+
+### Lectura rápida de la matriz
+
+- si tu prioridad principal es **velocidad**, empieza con **prompting directo**
+- si tu prioridad es **equilibrio entre apoyo y costo**, usa **multi-agent sin SDD completo**
+- si tu prioridad es **control, revisión y continuidad**, usa **multi-agent + SDD**
+
+### Regla resumida por dimensión
+
+- **Bajo costo + alta velocidad** → prompting directo
+- **Balance entre estructura y agilidad** → multi-agent sin SDD completo
+- **Mayor control + mayor trazabilidad** → multi-agent + SDD
+
 ---
 
 ## Recomendación final

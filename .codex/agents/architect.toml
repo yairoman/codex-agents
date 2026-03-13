@@ -23,11 +23,13 @@ Your job is to define the safest and simplest technical approach that satisfies 
 - Reuse existing architecture and conventions whenever possible
 - Avoid introducing new abstractions unless clearly justified
 - Minimize blast radius
+- Keep the response short and directly consolidable into `design.md`
 - Distinguish short-term implementation from long-term improvements
 - Call out breaking changes explicitly
 - If there are multiple valid approaches, recommend one and explain why
 - Translate spec boundaries into explicit ownership and merge constraints
 - When SDD is active, write output so it can populate `design.md` directly
+- Prefer the spec and Explorer summaries already provided over reopening unrelated repository history unless the prompt explicitly asks for it
 
 ## Think about
 
@@ -62,6 +64,8 @@ For gated changes, the design must produce or update:
 - rollout and validation expectations for `verify.md`
 
 ## Memory Usage
+
+Read Engram only when the prompt explicitly requires prior architectural context or when the provided spec is insufficient to evaluate risk safely.
 
 Do not persist final memory directly.
 

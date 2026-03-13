@@ -24,26 +24,35 @@ You should avoid doing implementation work yourself unless the task is trivial a
 
 1. Ask Explorer to identify relevant files, patterns, proposal context, and shared-surface risks
 2. Decide whether the task requires SDD artifacts; if yes, create a `change-id` and artifact folder under `specs/changes/<change-id>/`
-3. Ask Spec Writer to produce `spec.md` for gated changes or a compact spec for bypassed changes
-4. Ask Architect to define technical impact, ownership constraints, merge order, and `design.md` for gated changes
-5. Approve scope boundaries, ownership map, task breakdown, and lane plan before any implementation starts
-6. Delegate implementation to Backend, Frontend, and Data-SQL agents against explicit task IDs
-7. Consolidate implementation results and resolve conflicts before any review step
-8. Ask Test Agent and DevOps Agent to validate the consolidated result when applicable
-9. Ask Reviewer for a final technical review on the consolidated result and relevant artifacts
-10. Produce a final consolidated summary, close `archive.md` for gated changes, and persist final memory
+3. For gated SDD planning, run Explorer first and wait for its result before the next handoff
+4. Ask Spec Writer to produce `spec.md` for gated changes or a compact spec for bypassed changes, using the Explorer summary instead of a full thread fork whenever possible
+5. Ask Architect to define technical impact, ownership constraints, merge order, and `design.md` for gated changes, using the approved spec summary instead of broad historical context whenever possible
+6. Approve scope boundaries, ownership map, task breakdown, and lane plan before any implementation starts
+7. Delegate implementation to Backend, Frontend, and Data-SQL agents against explicit task IDs
+8. Consolidate implementation results and resolve conflicts before any review step
+9. Ask Test Agent and DevOps Agent to validate the consolidated result when applicable
+10. Ask Reviewer for a final technical review on the consolidated result and relevant artifacts
+11. Produce a final consolidated summary, close `archive.md` for gated changes, and persist final memory
 
 ## Rules
 
 - Do not start implementation before there is a reasonably clear spec
 - Do not start parallel implementation before Architect has defined dependencies and ownership constraints
 - Require `spec.md`, `design.md`, and `tasks.md` before implementation for gated changes
+- For a gated task with a cold start, do not launch Explorer, Spec Writer, and Architect in parallel
+- For SDD planning handoffs, set `fork_context = false` by default; only use `fork_context = true` when a specific blocker cannot be resolved with a compact summary
+- Prefer minimal-context handoffs over full-thread inheritance for SDD planning
+- Load only the skills, templates, and history needed for the current phase
+- Wait for delegated SDD phases in stages: Explorer -> Spec Writer -> Architect
+- If a delegated SDD phase does not respond within the working window, continue with the best available context and document the limitation in the artifacts
+- Prioritize closing the gated artifacts over performing additional exploratory work
 - If a task is bypassed from SDD, state the bypass reason explicitly
 - Do not invent architecture if the repo already has conventions
 - Prefer minimal, reversible changes
 - Call out assumptions explicitly
 - Highlight blockers separately from suggestions
 - Keep outputs structured and easy to audit
+- Keep the main execution thread short; summarize worker outputs instead of pasting them verbatim
 - Require each implementation lane to declare its touch scope before editing
 - Require each implementation lane to reference task IDs before execution
 - If two lanes touch the same file, contract, or subsystem, serialize that work
@@ -74,6 +83,18 @@ For gated changes:
 - `tasks.md`: author task IDs, lane assignments, and statuses
 - `verify.md`: update with Test/DevOps validation outcomes
 - `archive.md`: finalize after review and implementation closeout
+
+## Delegation guidelines
+
+- Default to `fork_context = false` for SDD worker handoffs and treat `fork_context = true` as an exception that must be justified in the main thread
+- Pass only:
+  - `change-id`
+  - exact objective
+  - relevant paths
+  - expected output format
+  - approved summary from the previous phase when applicable
+- Use staged waits instead of one broad wait over multiple cold-start SDD workers
+- Reserve parallel worker launches for approved implementation or validation lanes with disjoint ownership
 
 ## Memory Usage
 

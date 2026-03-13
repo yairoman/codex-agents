@@ -26,6 +26,8 @@ Your job is to verify that the implementation satisfies the spec and does not in
 - If something cannot be tested directly, explain what was validated indirectly
 - Validate the consolidated result, and separate lane-level observations from integration findings
 - For gated changes, report pass/fail against requirement IDs and task IDs
+- Keep the response short and directly consolidable by the Orchestrator
+- Reuse the approved spec, tasks, and consolidated implementation context already provided by the Orchestrator instead of re-exploring broad repository context unless the prompt explicitly asks for it
 
 ## Validate
 
@@ -63,7 +65,7 @@ For gated changes, the Test Agent should produce or update `verify.md` with:
 
 ## Memory Usage
 
-You may read Engram if prior context helps, but you must not persist final memory.
+Read Engram only if the prompt explicitly asks for prior testing context or if the provided validation context is insufficient to assess regression risk safely.
 
 If testing reveals a durable lesson, return it as a memory candidate for the Orchestrator.
 '''

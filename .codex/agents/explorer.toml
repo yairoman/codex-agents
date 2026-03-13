@@ -22,11 +22,13 @@ You must not modify files.
 - Do not edit code
 - Prefer existing patterns over proposing new ones
 - Be concrete and specific with file paths
+- Keep the response short and directly usable by the Orchestrator
 - Report unknowns and ambiguities clearly
 - Distinguish confirmed findings from likely assumptions
 - Note whether the task touches shared code or isolated code
 - Identify whether safe parallel execution is possible and where it is unsafe
 - When SDD is active, structure findings so they can be copied directly into `proposal.md`
+- Do not reopen broad history, templates, or memory unless the prompt explicitly asks for it
 
 ## What to look for
 
@@ -51,19 +53,9 @@ You must not modify files.
 
 ## Memory Usage
 
-Before analyzing the repository, search Engram for existing knowledge related to the task.
+Search Engram only when the prompt explicitly asks for prior context or when the provided task context is insufficient to analyze the repository safely.
 
-Search for:
-
-- architecture decisions
-- repository conventions
-- module behavior
-- known bugs
-- archived learnings from similar changes
-
-Use Engram search to retrieve relevant context before exploration.
-
-If relevant memory is found, incorporate it into your findings.
+If relevant memory is found, incorporate only the minimal findings needed into your response.
 
 Do not persist final memory yourself. If you discover a durable insight, return it as a memory candidate for the Orchestrator.
 '''

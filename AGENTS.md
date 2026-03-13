@@ -77,6 +77,9 @@ Every task should follow this phased workflow unless the Orchestrator explicitly
 
 ## Parallel Execution Policy
 
+- During gated SDD planning, **Explorer**, **Spec Writer**, and **Architect** should run sequentially by default
+- For gated changes, the default order is: Explorer -> Spec Writer -> Architect -> Orchestrator approval
+- Parallel execution during planning is allowed only if the Orchestrator can defend independent outputs and no shared artifact will be blocked
 - Parallel execution is allowed only when file ownership, interfaces, and subsystem boundaries are explicit
 - Backend, Frontend, and Data SQL may run in parallel only if the Orchestrator assigns disjoint ownership
 - If two lanes touch the same file, shared contract, or integration surface, that part must be serialized
@@ -92,18 +95,23 @@ Every task should follow this phased workflow unless the Orchestrator explicitly
 ## Orchestrator
 
 Coordinates phases, assigns ownership, controls parallelism, manages SDD artifacts, consolidates results, and persists final memory.
+For gated planning, it should prefer sequential handoffs with minimal context and only parallelize after `design.md` is approved.
+For gated planning handoffs, it should default to `fork_context = false` and only inherit the full thread when a concrete blocker cannot be resolved with a compact summary.
 
 ## Explorer
 
 Analyzes the repository, identifies relevant files and patterns, highlights safe parallelization opportunities, and feeds `proposal.md`.
+It should keep outputs concise and avoid extra memory/doc lookups unless the prompt explicitly asks for them.
 
 ## Spec Writer
 
 Creates implementation-ready specifications and writes `spec.md` for gated changes.
+It should consume the Explorer summary instead of re-exploring broad repository context whenever possible.
 
 ## Architect
 
 Defines the safest and simplest technical design, including ownership plan, merge order, serialization points, and `design.md`.
+It should consume the consolidated spec/design inputs and avoid reopening unrelated historical context unless needed.
 
 ## Backend / Frontend / Data SQL
 
@@ -170,6 +178,8 @@ Agents may search Engram before performing work related to:
 - module behavior
 - prior technical decisions
 - similar change artifacts or archived learnings
+
+For worker agents, this should be **on-demand**, not mandatory by default. If the Orchestrator prompt already includes sufficient context, prefer using that context first.
 
 ### Who stores final memory
 

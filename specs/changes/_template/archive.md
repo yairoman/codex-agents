@@ -1,7 +1,7 @@
 # Archive
 
 - **Change ID**:
-- **Status**: final
+- **Status**: draft | approved
 - **Owner**:
 
 ## Final Summary

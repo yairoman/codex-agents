@@ -1,7 +1,7 @@
 # Proposal
 
 - **Change ID**:
-- **Status**: draft | approved | rejected
+- **Status**: draft | approved
 - **Owner**:
 
 ## Goal

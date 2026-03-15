@@ -1,7 +1,7 @@
 # Tasks
 
 - **Change ID**:
-- **Status**: draft | approved | in_progress | done
+- **Status**: draft | approved
 - **Owner**:
 
 ## Task List

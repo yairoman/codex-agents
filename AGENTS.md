@@ -36,6 +36,13 @@ Gate SDD when the task:
 
 Bypass SDD only for documentation-only work, trivial local changes, or low-risk fixes with no shared-contract impact. If bypassing, state the reason explicitly.
 
+### Canonical artifact Status
+
+- Use only `draft` or `approved` for the top-level `Status` field in `proposal.md`, `spec.md`, `design.md`, `tasks.md`, `verify.md`, and `archive.md`.
+- The top-level `Status` indicates the review/approval state of the artifact itself, not the implementation outcome.
+- Legacy artifact-level values such as `approved_with_limitations`, `partial`, `final`, `rejected`, or `done` may remain in historical folders, but must not be used in new artifacts.
+- Limitations, rejections, partial results, blocked work, or final closure details must be recorded in the body of the artifact or in line-level fields such as requirement/task outcomes.
+
 ## Workflow
 
 Default sequence:

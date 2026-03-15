@@ -43,6 +43,19 @@ Examples:
 - Test owns `verify.md`
 - Reviewer validates artifact consistency before closeout
 
+## Canonical artifact Status
+
+For new or actively edited artifacts, the top-level `Status` field is canonicalized to:
+
+- `draft`
+- `approved`
+
+This artifact-level `Status` represents the review/approval state of the document itself, not the runtime outcome of the change.
+
+Historical artifact-level values such as `approved_with_limitations`, `partial`, `final`, `rejected`, or `done` may remain in older change folders as legacy examples, but they must not be reused in new artifacts.
+
+Record limitations, rejection decisions, blocked work, partial execution, or final closure details in the artifact body or in line-level result fields (for example `REQ-*` or `TASK-*` outcomes), not in the top-level `Status`.
+
 ## Bypass policy
 
 If the Orchestrator bypasses SDD, it must record the reason in the main response.
